@@ -108,7 +108,12 @@ app.post("/submit", (req, res) => {
   }
 
   try {
-    fs.writeFileSync(filePath, blocks.join("\n\n").trim() + "\n", "utf8");
+    // 🧹 Clean up each block (remove leading/trailing blank lines)
+    const cleanedBlocks = blocks.map((b) => b.trim());
+
+    // 📄 Join with exactly ONE blank line between months
+    fs.writeFileSync(filePath, cleanedBlocks.join("\n\n") + "\n", "utf8");
+
     res.json({ message: "✅ Work saved and summarized." });
   } catch (err) {
     console.error("❌ Failed to write file:", err);
